@@ -1,7 +1,7 @@
 import update from 'immutability-helper';
 import axios from 'axios'
 
-const baseURL = "http://localhost:8080/api/v1/todos"
+const baseURL = "/api/v1/todos"
 
 /**
  * Get the list of todo items.
