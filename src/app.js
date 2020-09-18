@@ -11,10 +11,10 @@ import router from './routes'
 dotenv.config()
 const app = express()
 
-if (process.env.NODE_ENV !== 'production') {
-  import morgan from 'morgan'
-  app.use(morgan('dev'))
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   import morgan from 'morgan'
+//   app.use(morgan('dev'))
+// }
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
