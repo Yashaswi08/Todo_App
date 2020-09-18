@@ -2,17 +2,20 @@ import path from 'path'
 import express from 'express'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
-import morgan from 'morgan'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import './models'
-
 import router from './routes'
+
 
 dotenv.config()
 const app = express()
 
-app.use(morgan('dev'))
+if (process.env.NODE_ENV !== 'production') {
+  import morgan from 'morgan'
+  app.use(morgan('dev'))
+}
+
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
