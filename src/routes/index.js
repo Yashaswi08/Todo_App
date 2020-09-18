@@ -1,10 +1,7 @@
-import express from "express"
-import path from 'path'
-
+import express from 'express'
+import Todos from './Todos'
 const router = express.Router()
 
-router.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './../../public/index.html'))
-})
+router.use('/todos', Todos)
 
-module.exports = router
+export default router
