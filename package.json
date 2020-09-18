@@ -6,7 +6,6 @@
   "scripts": {
     "start": "babel-node ./src/app.js",
     "dev": "nodemon --exec babel-node ./src/app.js",
-    "build": "",
     "deploy": "cd client && yarn build && cd ../ && rm -rf ./public/*  && mv -v ./client/build/* ./public/ && git push heroku master"
   },
   "repository": {
