@@ -11,7 +11,7 @@ class StateProvider extends Component {
             query: '',
             mode: MODE_CREATE,
             filter: FILTER_ALL,
-            list: getAll()
+            list: []
         }
     }
 
@@ -24,20 +24,38 @@ class StateProvider extends Component {
         return <div>{children}</div>;
     }
 
-    addNew(text) {
-        let updatedList = addToList(this.state.list, {text, completed: false});
-
-        this.setState({list: updatedList});
+    async addNew(text) {
+        const todo = await addToList(text, this.state.list)
+        this.setState({
+            list: [
+                ...this.state.list,
+                todo
+            ]
+        })
     }
 
     changeFilter(filter) {
         this.setState({filter});
     }
 
-    changeStatus(itemId, completed) {
-        const updatedList = updateStatus(this.state.list, itemId, completed);
+    async changeStatus(todo, data) {
+        await updateStatus(todo._id, data)
+            .then((res => {
+                this.setState({
+                    list: this.state.list.map(item => {
+                        return item.id === todo.id ?
+                            {
+                                id: todo.id,
+                                _id: res._id,
+                                completed: res.completed,
+                                text: res.text
+                            } : item
+                    })
+                })
+            }))
+        // const updatedList = updateStatus(this.state.list, itemId, completed);
 
-        this.setState({list: updatedList});
+        // this.setState({list: updatedList});
     }
 
     changeMode(mode = MODE_NONE) {
@@ -47,6 +65,20 @@ class StateProvider extends Component {
     setSearchQuery(text) {
         this.setState({query: text || ''});
     }
+
+    initilaize() {
+        getAll().then(todos => {
+            this.setState({
+                list: todos || []
+            })
+        })
+
+    }
+    componentDidMount() {
+        this.initilaize()
+    }
+    // initialize() {
+    // }
 }
 
 export default StateProvider;

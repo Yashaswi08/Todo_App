@@ -1,42 +1,30 @@
 import update from 'immutability-helper';
+import axios from 'axios'
+
+const baseURL = "http://localhost:8080/api/v1/todos"
 
 /**
  * Get the list of todo items.
  * @return {Array}
  */
-export function getAll() {
-    return [
-        {
-            id: 1,
-            text: 'Learn Javascript',
-            completed: false
-        },
-        {
-            id: 2,
-            text: 'Learn React',
-            completed: false
-        },
-        {
-            id: 3,
-            text: 'Build a React App',
-            completed: false
-        }
-    ]
+
+export const getAll = async () => {
+    const res = await axios.get(baseURL)
+    return res.data.map((todo, index) => ({
+        id: index + 1,
+        text: todo.text,
+        completed: todo.completed,
+        _id: todo._id
+    }))
 }
 
-export function getItemById(itemId) {
+export const getItemById = (itemId) => {
     return getAll().find(item => item.id === itemId);
 }
 
-export function updateStatus(items, itemId, completed) {
-    let index = items.findIndex(item => item.id === itemId);
-
-    // Returns a new list of data with updated item.
-    return update(items, {
-        [index]: {
-            completed: {$set: completed}
-        }
-    });
+export const updateStatus = async (id, data) => {
+    const res = await axios.patch(`${baseURL}/${id}`, data)
+    return res.data
 }
 
 /**
@@ -57,10 +45,12 @@ function getNextId() {
  * @param {Object} data
  * @return {Array}
  */
-export function addToList(list, data) {
-    let item = Object.assign({
-        id: getNextId()
-    }, data);
-
-    return list.concat([item]);
+export const addToList = async (data, list) => {
+    const res = await axios.post(baseURL, { text: data })
+    return {
+        id: list.length + 1,
+        text: res.data.text,
+        completed: res.data.completed,
+        _id: res.data._id,
+    }
 }
