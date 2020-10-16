@@ -1,6 +1,6 @@
-# Todo Application for Instasolv
+# Todo Application
 
-Todo Application created in Node, Express and MongoDB for Instasolv Backend Developer Interview Task
+Todo Application created in Node, Express and MongoDB for Backend Developer Interview Task
 
 ## Technologies Used
   * Node
